@@ -1,0 +1,44 @@
+---
+- name: Создание директории домена
+  file:
+    path: "{{ domain_home }}"
+    state: directory
+    owner: "{{ oracle_user }}"
+    group: "{{ oracle_group }}"
+    mode: '0755'
+
+- name: Запуск WLST для создания домена
+  shell: "{{ oracle_home }}/oracle_common/common/bin/wlst.sh {{ role_path }}/templates/create-domain.py.j2"
+  become_user: "{{ oracle_user }}"
+
+- name: Подготовка папки Security (пункт 11)
+  file:
+    path: "{{ domain_home }}/servers/{{ admin_server_name }}/security"
+    state: directory
+    owner: "{{ oracle_user }}"
+    group: "{{ oracle_group }}"
+
+- name: Создание boot.properties (авто-вход)
+  copy:
+    dest: "{{ domain_home }}/servers/{{ admin_server_name }}/security/boot.properties"
+    content: |
+      username={{ wls_admin_user }}
+      password={{ wls_admin_password }}
+    owner: "{{ oracle_user }}"
+    group: "{{ oracle_group }}"
+    mode: '0600'
+
+- name: Конфигурация Node Manager (пункт 12)
+  template:
+    src: nodemanager.properties.j2
+    dest: "{{ domain_home }}/nodemanager/nodemanager.properties"
+    owner: "{{ oracle_user }}"
+    group: "{{ oracle_group }}"
+
+- name: Регистрация домена в Node Manager
+  lineinfile:
+    path: "{{ domain_home }}/nodemanager/domains.lst"
+    line: "{{ domain_name }}={{ domain_home }}"
+    create: yes
+    owner: "{{ oracle_user }}"
+    group: "{{ oracle_group }}"

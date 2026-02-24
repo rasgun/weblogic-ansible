@@ -1,0 +1,13 @@
+---
+- name: Установка WebLogic 12.2.1.3
+  hosts: all
+  become: yes
+  vars_files:
+    - infra-vars.yml
+    - secrets.yml
+
+  roles:
+    - role: linux-wls          # Подготовка ОС (пакеты, лимиты)
+    - role: linux-jdk          # Установка Java 8
+    - role: fmw-software       # Установка WebLogic (Silent Install)
+    - role: fmw-domain         # Создание домена и конфиги

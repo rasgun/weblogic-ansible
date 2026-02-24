@@ -1,0 +1,43 @@
+---
+# ==========================================
+# Системные настройки
+# ==========================================
+oracle_user: oracle
+oracle_group: oinstall
+java_install_dir: /usr/java
+oracle_home: /oracle/product/12.1.3.0.0/mw
+jdk_version: "jdk1.8.0_311" 
+jdk_archive: "jdk-8u311-linux-x64.tar.gz"
+
+# ==========================================
+# Переменные для роли fmw-software (совместимость)
+# ==========================================
+# Путь, куда копируем инсталлятор на сервере
+mw_installer_folder: /tmp
+# Имя самого jar-файла
+mw_installer: "fmw_12.1.3.0.0_wls.jar"
+# Путь к Java для инсталлятора
+jdk_folder: "/usr/java/jdk1.8.0_311"
+
+# ==========================================
+# Настройки домена (пути из вашей инструкции)
+# ==========================================
+domain_name: "base_domain"
+domain_home: "/oracle/product/fmw/user_projects/domains/base_domain"
+admin_server_name: "AdminServer"
+admin_port: 7001
+
+# Слушаем на всех внутренних интерфейсах (доступ с сервера и из сети)
+admin_listen_address: "0.0.0.0"
+
+# ==========================================
+# Технические переменные
+# ==========================================
+wls_admin_user: "weblogic"
+ora_inventory: /oracle/oraInventory
+tmp_dir: /tmp
+
+# Пустые списки для совместимости логики ролей
+machines: []
+managed_servers: []
+clusters: []
