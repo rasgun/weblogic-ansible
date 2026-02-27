@@ -4,8 +4,7 @@
 ![Java](https://img.shields.io/badge/Java-8-orange?style=for-the-badge&logo=openjdk)
 ![WebLogic](https://img.shields.io/badge/Oracle-WebLogic_12c-blue?style=for-the-badge&logo=oracle)
 
-Автоматизированное развертывание **Oracle WebLogic Server 12.1.3** с помощью Ansible. Этот плейбук берет на себя всю "грязную" работу: от настройки ядра Linux до создания рабочего домена.
-
+Автоматизированное развертывание **Oracle WebLogic Server 12.1.3** с помощью Ansible.
 ---
 
 ## 🛠 Основные возможности
