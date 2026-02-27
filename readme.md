@@ -51,18 +51,16 @@ ansible-playbook -i hosts weblogic-fmw-domain.yml -k -vv | tee install_detailed.
 
 После завершения все действия выполняются под пользователем oracle.
 
-Шаг 1: Вход и переход в директорию
-
-Bash
-
+### Шаг 1: Вход и переход в директорию
+```bash
 ssh root@192.168.1.4
 sudo su - oracle
 cd /oracle/product/fmw/user_projects/domains/base_domain/bin
 
 Шаг 2: Запуск сервисов в фоне
-Сервис	Команда запуска
-Node Manager	nohup ./startNodeManager.sh > nm.out &
-Admin Server	nohup ./startWebLogic.sh > wls.out &
+Сервис,Команда запуска
+Node Manager,nohup ./startNodeManager.sh > nm.out &
+Admin Server,nohup ./startWebLogic.sh &
 
 🔗 Доступ к консоли
 
