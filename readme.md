@@ -38,7 +38,7 @@ wls-node-01 ansible_host=192.168.1.4
 ansible_user=root
 ansible_port=22
 ```
-🚀 ### Запуск установки
+### 🚀 Запуск установки
 
 Выполните команду. Флаг -k запросит пароль от root.
 
@@ -47,7 +47,7 @@ ansible-playbook -i hosts weblogic-fmw-domain.yml -k -vv | tee install_detailed.
 ```
 Далее необходимо пароль от root
 
-🏁 ## Управление после установки
+## 🏁 Управление после установки
 
 После завершения все действия выполняются под пользователем oracle.
 
