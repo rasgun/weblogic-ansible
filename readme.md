@@ -45,8 +45,12 @@ ansible_port=22
 ```bash
 ansible-playbook -i hosts weblogic-fmw-domain.yml -k -vv | tee install_detailed.log
 ```
-Далее необходимо пароль от root
+Далее необходимо ввести пароль от root
 
+Если во время установки возникли ошибки, посмотреть их можно коммандой:
+```bash
+grep -E "FAILED|FATAL" install_detailed.log
+```
 ## 🏁 Управление после установки
 
 После завершения все действия выполняются под пользователем oracle.
@@ -60,7 +64,7 @@ cd /oracle/product/fmw/user_projects/domains/base_domain/bin
 ### Шаг 2: Запуск сервисов в фоне
 Сервис,Команда запуска
 ```bash
-Node Manager,nohup ./startNodeManager.sh > nm.out &
+Node Manager,nohup ./startNodeManager.sh &
 Admin Server,nohup ./startWebLogic.sh &
 ```
 🔗 Доступ к консоли
