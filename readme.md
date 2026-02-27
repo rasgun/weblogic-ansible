@@ -39,31 +39,31 @@ ansible_port=22
 
 🚀 Запуск установки
 
+Выполните команду. Флаг -k запросит пароль от root.
+
+Bash
+
 ansible-playbook -i hosts weblogic-fmw-domain.yml -k -vv | tee install_detailed.log
+
+Далее необходимо пароль от root
 
 🏁 Управление после установки
 
-После завершения работы Ansible, переключитесь на пользователя oracle для управления сервером.
-Шаг 1: Вход на сервер
+После завершения все действия выполняются под пользователем oracle.
+
+Шаг 1: Вход и переход в директорию
+
 Bash
 
 ssh root@192.168.1.4
 sudo su - oracle
-
-Шаг 2: Запуск Node Manager
-
-Необходим для управления инстансами. Запускается в фоновом режиме:
-Bash
-
 cd /oracle/product/fmw/user_projects/domains/base_domain/bin
-nohup ./startNodeManager.sh &
 
-Шаг 3: Запуск Admin Server
-Bash
-
-nohup ./startWebLogic.sh &
+Шаг 2: Запуск сервисов в фоне
+Сервис	Команда запуска
+Node Manager	nohup ./startNodeManager.sh > nm.out 2>&1 &
+Admin Server	nohup ./startWebLogic.sh > wls.out 2>&1 &
 
 🔗 Доступ к консоли
 
-Консоль управления будет доступна после запуска Admin Server по адресу:
-👉 https://www.google.com/search?q=http://192.168.1.4:7001/console
+👉 http://192.168.1.4:7001/console
