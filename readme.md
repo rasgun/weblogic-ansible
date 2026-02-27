@@ -30,6 +30,7 @@
 ### Инвентарь (`hosts`)
 Отредактируйте файл `hosts`, указав IP вашего сервера:
 
+```bash
 [weblogic]
 wls-node-01 ansible_host=192.168.1.4
 
@@ -41,7 +42,7 @@ ansible_port=22
 
 Выполните команду. Флаг -k запросит пароль от root.
 
-Bash
+```bash
 
 ansible-playbook -i hosts weblogic-fmw-domain.yml -k -vv | tee install_detailed.log
 
