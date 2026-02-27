@@ -28,8 +28,8 @@
 ## ⚙️ Настройка (Configuration)
 
 ### Инвентарь (`hosts`)
-Отредактируйте файл `hosts`, указав IP вашего сервера:
 
+Отредактируйте файл `hosts`, указав IP вашего сервера:
 ```bash
 [weblogic]
 wls-node-01 ansible_host=192.168.1.4
@@ -37,15 +37,14 @@ wls-node-01 ansible_host=192.168.1.4
 [weblogic:vars]
 ansible_user=root
 ansible_port=22
-
+```
 🚀 Запуск установки
 
 Выполните команду. Флаг -k запросит пароль от root.
 
 ```bash
-
 ansible-playbook -i hosts weblogic-fmw-domain.yml -k -vv | tee install_detailed.log
-
+```
 Далее необходимо пароль от root
 
 🏁 Управление после установки
@@ -62,7 +61,7 @@ cd /oracle/product/fmw/user_projects/domains/base_domain/bin
 Сервис,Команда запуска
 Node Manager,nohup ./startNodeManager.sh > nm.out &
 Admin Server,nohup ./startWebLogic.sh &
-
+```
 🔗 Доступ к консоли
 
 👉 http://192.168.1.4:7001/console
