@@ -61,8 +61,8 @@ cd /oracle/product/fmw/user_projects/domains/base_domain/bin
 
 Шаг 2: Запуск сервисов в фоне
 Сервис	Команда запуска
-Node Manager	nohup ./startNodeManager.sh > nm.out 2>&1 &
-Admin Server	nohup ./startWebLogic.sh > wls.out 2>&1 &
+Node Manager	nohup ./startNodeManager.sh > nm.out &
+Admin Server	nohup ./startWebLogic.sh > wls.out &
 
 🔗 Доступ к консоли
 
