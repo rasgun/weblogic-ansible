@@ -1,1 +1,8 @@
-weblogic ansible_ssh_host=192.168.1.4 ansible_ssh_port=22
+[weblogic]
+# Имя хоста (alias) и его адрес
+server-01 ansible_host=192.168.1.4
+
+[weblogic:vars]
+# Общие параметры для всех серверов в группе weblogic
+ansible_port=22
+ansible_user=root
