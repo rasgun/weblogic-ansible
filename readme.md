@@ -1,94 +1,50 @@
-🚀 WebLogic 12.1.3 Automated Deployment (Ansible)
+\# 🚀 WebLogic Server 12.1.3 Automated Deployment
 
 
 
-Данный проект предназначен для автоматизированной установки Oracle WebLogic Server 12.1.3 и создания базового домена на чистом сервере (Linux). Все действия выполняются от имени пользователя oracle, что соответствует стандартам безопасности и администрирования Oracle.
+!\[Ansible](https://img.shields.io/badge/Ansible-2.9+-black?style=for-the-badge\&logo=ansible)
 
-📋 Содержание
+!\[Java](https://img.shields.io/badge/Java-8-orange?style=for-the-badge\&logo=openjdk)
 
+!\[WebLogic](https://img.shields.io/badge/Oracle-WebLogic\_12c-blue?style=for-the-badge\&logo=oracle)
 
 
-    Требования
 
+Автоматизированное развертывание \*\*Oracle WebLogic Server 12.1.3\*\* с помощью Ansible. Плейбук подготавливает операционную систему, устанавливает JDK и WLS, а также создает рабочий домен.
 
 
-    Структура проекта
 
+---
 
 
-    Быстрый старт (Настройка)
 
+\## 📂 Подготовка дистрибутивов
 
+Перед запуском скачайте и разместите файлы в папках ролей:
 
-    Запуск установки
+1\. \*\*JDK:\*\* `roles/linux-jdk/files/jdk-8u311-linux-x64.tar.gz`
 
+2\. \*\*WLS:\*\* `roles/fmw-software/files/fmw\_12.1.3.0.0\_wls.jar`
 
 
-    Что делать после установки
 
+---
 
 
-🛠 Требования
 
+\## ⚙️ Настройка окружения
 
 
-Перед запуском убедитесь, что у вас есть:
 
+\### 1. Инвентаризация (`hosts`)
 
+Укажите IP вашего сервера в файле `hosts`:
 
-    Удаленный сервер: Свежая ОС семейства Linux (CentOS/RHEL/Oracle Linux рекомендуются).
-
-
-
-    Локальная машина: Установленный Ansible (версия 2.9+).
-
-
-
-    Дистрибутивы: В папку roles/fmw-software/files/ и roles/linux-jdk/files/ нужно положить:
-
-
-
-        jdk-8u311-linux-x64.tar.gz
-
-
-
-        fmw\_12.1.3.0.0\_wls.jar
-
-
-
-📂 Структура проекта
-
-
-
-    linux-jdk: Установка Java (JDK 8).
-
-
-
-    linux-wls: Подготовка ОС (создание пользователя oracle, групп, лимитов).
-
-
-
-    fmw-software: "Тихая" установка бинарников WebLogic.
-
-
-
-    fmw-domain: Создание домена, Admin-сервера и настройка портов.
-
-
-
-⚙️ Быстрый старт (Настройка)
-
-Шаг 1: Настройка доступа к серверу
-
-
-
-Отредактируйте файл hosts. Укажите IP вашего сервера(ов) и пользователя (обычно root для первой настройки):
-
-
+```ini
 
 \[weblogic]
 
-server-prod-01 ansible\_host=192.168.1.4
+wls-node-01 ansible\_host=192.168.1.4
 
 
 
@@ -100,23 +56,23 @@ ansible\_port=22
 
 
 
-Шаг 2: Настройка переменных (infra-vars)
+2\. Переменные окружения (infra-vars.yml)
 
 
 
-Откройте infra-vars.yml и проверьте основные пути:
+Проверьте ключевые параметры в файле переменных:
 
 
 
-    oracle\_home: путь к установке WebLogic.
+&nbsp;   oracle\_home: путь к Middleware (бинарные файлы).
 
 
 
-    domain\_home: путь к будущему домену.
+&nbsp;   domain\_home: путь к конфигурации домена.
 
 
 
-    wls\_admin\_user/wls\_admin\_password: ваши учетные данные для входа в консоль WebLogic.
+&nbsp;   wls\_admin\_password: пароль для входа в консоль управления.
 
 
 
@@ -124,7 +80,7 @@ ansible\_port=22
 
 
 
-Для запуска процесса используйте следующую команду. Мы добавили логирование, чтобы вы могли отследить каждый шаг.
+Используйте команду ниже для запуска процесса. Флаг -k инициирует запрос пароля SSH для пользователя root.
 
 Bash
 
@@ -134,95 +90,75 @@ ansible-playbook -i hosts weblogic-fmw-domain.yml -k -vv | tee install\_detailed
 
 
 
-После запуска плейбука необходимо ввести пароль от root пользователя
+&nbsp;   Note: Флаг -vv обеспечит подробный вывод для отладки, а tee запишет полный лог в файл install\_detailed.log.
 
 
 
-Что значат флаги:
+🏁 Управление после установки
 
 
 
-    -k: Ansible спросит у вас пароль от пользователя root.
+После завершения плейбука все действия выполняются под пользователем oracle.
+
+Шаг 1: Вход на сервер
+
+Bash
 
 
 
-    -vv: Очень подробный вывод (важно для первого раза).
+ssh root@192.168.1.4
+
+sudo su - oracle
 
 
 
-    | tee ...: Запись всего процесса в файл лога.
+Шаг 2: Запуск Node Manager
 
 
 
+Необходим для управления инстансами через консоль. Запускается в фоновом режиме:
 
-
-Если возникли ошибки в процессе установки, посмотреть их можно следующей командой
-
-
-
-grep -E "FAILED|FATAL" install\_detailed.log
+Bash
 
 
 
+cd /oracle/product/fmw/user\_projects/domains/base\_domain/bin
 
-
-🏁 Что делать после установки?
-
-
-
-Когда плейбук завершит работу, ваш WebLogic будет готов, но его нужно запустить.
+nohup ./startNodeManager.sh > nm.out 2>\&1 \&
 
 
 
-    Зайдите на сервер:
-
-    Bash
+Шаг 3: Проверка Node Manager (опционально)
 
 
 
-    ssh root@192.168.1.4
+Чтобы убедиться, что Node Manager запустился успешно, проверьте порт 5556:
+
+Bash
 
 
 
-    Переключитесь на пользователя oracle:
-
-    Bash
+netstat -an | grep 5556
 
 
 
-    sudo su - oracle
+Шаг 4: Запуск Admin Server
+
+Bash
 
 
 
-    Запустите AdminServer:
+cd /oracle/product/fmw/user\_projects/domains/base\_domain/bin
 
-    Bash
-
-
-
-    cd /oracle/product/fmw/user\_projects/domains/base\_domain/bin
-
-    nohup ./startWebLogic.sh \&
-
- 
-
-    Запустите Nodmanager:
-
-    Bash
-
- 
-
-    sudo su - oracle
-
-    cd /oracle/product/fmw/user\_projects/domains/base\_domain/bin
-
-    nohup ./startNodeManager.sh \&
+./startWebLogic.sh
 
 
 
-    Войдите в консоль управления:
+🔗 Доступ к консоли
 
-    Откройте браузер и перейдите по адресу:
 
-    http://192.168.1.4:7001/console
+
+После успешного запуска Admin Server консоль управления будет доступна по адресу:
+
+📌 https://www.google.com/url?sa=E\&source=gmail\&q=http://192.168.1.4:7001/console
 
